@@ -1,8 +1,10 @@
 <template>
     <div class="content">
         <h2>{{ post.title }}</h2>
-        <p v-html="post.content">
+        <img :src="post.cover_photo">
+        <p class="text" v-html="post.content">
         </p>
+        <div style="height: 50px"></div>
     </div>
 </template>
 
@@ -18,7 +20,6 @@ export default {
         this.postResource = this.$resource('posts/' + this.$route.params.id + '/');
         this.postResource.get()
             .then(response => {
-                console.log(response);
                 return response.json();
             })
             .then(data => {
@@ -28,8 +29,13 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .content {
     padding: 10px;
+}
+
+.text {
+    text-align: justify;
+    text-justify: inter-word;
 }
 </style>

@@ -36,7 +36,7 @@ export default {
         },
         handleScroll(){
             if (window.scrollY + window.innerHeight >=
-                    (document.documentElement.scrollHeight - 400)){
+                    (document.documentElement.scrollHeight - window.innerHeight / 2)){
                 if (!this.loadingInProgress) {
                     this.loadingInProgress = true
                     this.loadMorePosts();
