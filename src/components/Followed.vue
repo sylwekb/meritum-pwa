@@ -1,6 +1,6 @@
 <template>
 <div class="content">
-    <md-layout md-align="center" v-if="showSpinner">
+    <md-layout md-align="center" v-if="loadingInProgress">
         <md-spinner md-indeterminate class="md-accent"></md-spinner>
     </md-layout>
     <meritum-card-post v-for="post in posts" :post="post" :key="post.id"></meritum-card-post>
@@ -9,46 +9,46 @@
 
 <script>
 import CardPost from './CardPost.vue'
+import { mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 
 var _ = require('lodash');
 
 export default {
     data() {
         return {
-            posts: [],
-            postResource: {},
-            limit: 10,
-            offset: 0,
-            showSpinner: true,
+            loadingInProgress: false,
         };
     },
     components: {
         meritumCardPost: CardPost,
     },
+    computed: {
+        ...mapGetters({
+            posts: 'postsFollowed',
+        }),
+    },
     methods: {
-        handleScroll(cos){
-            if (window.scrollY + window.innerHeight >= (document.documentElement.scrollHeight - 400)){
-                this.getPosts();
-            }
+        loadMorePosts(){
+            this.$store.dispatch('loadMorePosts', () => {
+                this.loadingInProgress = false;
+            });
         },
-        getPosts(){
-            console.log('offset', this.offset);
-            this.showSpinner = true;
-            this.postResource.query({limit: 10, offset: this.offset})
-                .then(response => {
-                    return response.json();
-                })
-                .then(data => {
-                    this.posts = this.posts.concat(data['results']);
-                    this.offset += 10;
-                    this.showSpinner = false;
-                })
+        handleScroll(){
+            if (window.scrollY + window.innerHeight >=
+                    (document.documentElement.scrollHeight - 400)){
+                if (!this.loadingInProgress) {
+                    this.loadingInProgress = true
+                    this.loadMorePosts();
+                }
+            }
         },
     },
     created() {
-      window.addEventListener('scroll', _.throttle(this.handleScroll, 500));
-        this.postResource = this.$resource('posts/');
-        this.getPosts();
+        let resource = this.$resource('posts/');
+        this.$store.commit('setPostsResource', resource);
+        this.loadMorePosts();
+        window.addEventListener('scroll', _.throttle(this.handleScroll, 100));
     }
 }
 </script>

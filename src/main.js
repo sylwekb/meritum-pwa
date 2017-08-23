@@ -11,7 +11,7 @@ const time_ago_english = new javascript_time_ago('en-US')
 
 import App from './App'
 import { routes } from './routes'
-
+import store from './store/store'
 
 Vue.use(VueMaterial);
 Vue.use(VueResource);
@@ -43,5 +43,6 @@ Vue.http.options.root = 'https://api.meritum.io/api/';
 new Vue({
     el: '#app',
     router,
+    store,
     render: h => h(App),
 })

@@ -8,13 +8,14 @@ const state = {
     postsFollowed: [],
     limit: 10,
     offsetFollowed: 0,
-    postResource: this.$resource('posts/'),
+    postResource: {},
 }
 
 const getters = {
     postsFollowed: state => state.postsFollowed,
     limit: state => state.limit,
     offsetFollowed: state => state.offsetFollowed,
+    postResource: state => state.postResource,
 }
 
 const mutations = {
@@ -24,12 +25,27 @@ const mutations = {
     nextOffsetFollowed(state) {
         state.offsetFollowed += 10;
     },
+    setPostsResource(state, payload) {
+        state.postResource = payload;
+    }
 }
 
 const actions = {
-    loadMorePosts(state) {
-
-    }
+    loadMorePosts(context, callback) {
+        context.getters.postResource.query(
+            {
+                limit: context.getters.limit,
+                offset: context.getters.offsetFollowed,
+            })
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                context.commit('nextOffsetFollowed');
+                context.commit('addPostsFollowed', data['results']);
+                callback();
+            })
+    },
 }
 
 
