@@ -43,8 +43,16 @@
 <script>
 export default {
     props: [
-        'post',
+        'object',
     ],
+    computed: {
+        post(){
+            if (this.object.type) {
+                return this.object.object;
+            }
+            return this.object
+        }
+    },
     methods: {
         goToPost(){
             this.$router.push({name: 'post', params: {id: this.post.id }});

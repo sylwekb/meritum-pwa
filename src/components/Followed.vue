@@ -3,13 +3,12 @@
     <md-layout md-align="center" v-if="loadingInProgress">
         <md-spinner md-indeterminate class="md-accent"></md-spinner>
     </md-layout>
-    <meritum-card-post v-for="post in posts" :post="post" :key="post.id"></meritum-card-post>
+    <meritum-card-post v-for="post in posts" :object="post" :key="post.id"></meritum-card-post>
 </div>
 </template>
 
 <script>
 import CardPost from './CardPost.vue'
-import { mapActions } from 'vuex'
 import { mapGetters } from 'vuex'
 
 var _ = require('lodash');

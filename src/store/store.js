@@ -5,17 +5,23 @@ import Vuex from 'vuex'
 Vue.use(Vuex);
 
 const state = {
-    postsFollowed: [],
-    limit: 10,
+    discoverFeed: [],
+    discoverResource: {},
+    limit: 20,
+    offsetDiscover: 0,
     offsetFollowed: 0,
     postResource: {},
+    postsFollowed: [],
 }
 
 const getters = {
-    postsFollowed: state => state.postsFollowed,
+    discoverFeed: state => state.discoverFeed,
+    discoverResource: state => state.discoverResource,
     limit: state => state.limit,
+    offsetDiscover: state => state.offsetDiscover,
     offsetFollowed: state => state.offsetFollowed,
     postResource: state => state.postResource,
+    postsFollowed: state => state.postsFollowed,
 }
 
 const mutations = {
@@ -27,7 +33,16 @@ const mutations = {
     },
     setPostsResource(state, payload) {
         state.postResource = payload;
-    }
+    },
+    addDiscoverFeed(state, payload) {
+        state.discoverFeed.push(...payload);
+    },
+    nextOffsetDiscover(state) {
+        state.offsetDiscover += 10;
+    },
+    setDiscoverResource(state, payload) {
+        state.discoverResource = payload;
+    },
 }
 
 const actions = {
@@ -43,6 +58,21 @@ const actions = {
             .then(data => {
                 context.commit('nextOffsetFollowed');
                 context.commit('addPostsFollowed', data['results']);
+                callback();
+            })
+    },
+    loadMoreFeed(context, callback) {
+        context.getters.discoverResource.query(
+            {
+                limit: context.getters.limit,
+                offset: context.getters.offsetDiscover,
+            })
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                context.commit('nextOffsetDiscover');
+                context.commit('addDiscoverFeed', data['results']);
                 callback();
             })
     },
