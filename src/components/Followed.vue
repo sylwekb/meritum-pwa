@@ -3,7 +3,7 @@
     <md-layout md-align="center" v-if="loadingInProgress">
         <md-spinner md-indeterminate class="md-accent"></md-spinner>
     </md-layout>
-    <meritum-card-post v-for="post in posts" :object="post" :key="post.id"></meritum-card-post>
+    <meritum-card-post v-for="post in posts" :object="post" :key="post.title + post.id"></meritum-card-post>
 </div>
 </template>
 
@@ -29,9 +29,9 @@ export default {
     },
     methods: {
         loadMorePosts(){
-            this.$store.dispatch('loadMorePosts', () => {
+            this.$store.dispatch('loadMorePosts').then(() => {
                 this.loadingInProgress = false;
-            });
+            }).catch((response) => console.error(response));
         },
         handleScroll(){
             if (window.scrollY + window.innerHeight >=
@@ -44,8 +44,6 @@ export default {
         },
     },
     created() {
-        let resource = this.$resource('posts/');
-        this.$store.commit('setPostsResource', resource);
         this.loadMorePosts();
         window.addEventListener('scroll', _.throttle(this.handleScroll, 100));
     }

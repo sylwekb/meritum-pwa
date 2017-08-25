@@ -45,9 +45,10 @@ export default {
             }
         },
         loadMoreFeed(){
-            this.$store.dispatch('loadMoreFeed', () => {
-                this.loadingInProgress = false;
-            });
+            this.$store.dispatch('loadMoreFeed')
+                .then(() => {
+                    this.loadingInProgress = false;
+                });
         },
         handleScroll(){
             if (window.scrollY + window.innerHeight >=
@@ -60,8 +61,6 @@ export default {
         },
     },
     created() {
-        let resource = this.$resource('discover/');
-        this.$store.commit('setDiscoverResource', resource);
         this.loadMoreFeed();
         window.addEventListener('scroll', _.throttle(this.handleScroll, 100));
     }

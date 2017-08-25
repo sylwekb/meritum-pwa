@@ -3,7 +3,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import VueMaterial from 'vue-material'
-import VueResource from 'vue-resource'
 import javascript_time_ago from 'javascript-time-ago'
 
 javascript_time_ago.locale(require('javascript-time-ago/locales/en'))
@@ -14,7 +13,6 @@ import { routes } from './routes'
 import store from './store/store'
 
 Vue.use(VueMaterial);
-Vue.use(VueResource);
 Vue.use(VueRouter);
 
 Vue.filter('timeAgo', value => {
@@ -37,8 +35,13 @@ const router = new VueRouter({
     routes,
 })
 
-Vue.http.options.root = 'https://api.meritum.io/api/';
-
+Vue.mixin({
+    methods: {
+        goToPost(post) {
+            this.$router.push({name: 'post', params: {id: post.id, post: post}});
+        },
+    },
+})
 
 new Vue({
     el: '#app',

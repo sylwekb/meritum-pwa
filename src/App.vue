@@ -1,6 +1,6 @@
 <template>
 <div class="phone-viewport">
-    <div class="contet">
+    <div class="content">
         <router-view></router-view>
     </div>
     <meritum-nav-bar></meritum-nav-bar>
@@ -19,6 +19,5 @@ export default {
 
 </script>
 
-<style>
-
+<style scoped>
 </style>

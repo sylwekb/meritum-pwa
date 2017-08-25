@@ -1,5 +1,5 @@
 <template>
-    <div @click="goToPost">
+    <div @click="goToPost(post)">
     <md-card>
 
         <md-card-header>
@@ -53,11 +53,6 @@ export default {
             return this.object
         }
     },
-    methods: {
-        goToPost(){
-            this.$router.push({name: 'post', params: {id: this.post.id }});
-        }
-    }
 }
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="horizontal-container">
         <meritum-vertical-category
             v-for="category in object"
             :category="category"
@@ -22,3 +22,6 @@ export default {
     }
 }
 </script>
+
+<style>
+</style>
