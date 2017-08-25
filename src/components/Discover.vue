@@ -61,7 +61,7 @@ export default {
         },
     },
     created() {
-        this.loadMoreFeed();
+        if (_.isEmpty(this.feed)) this.loadMoreFeed();
         window.addEventListener('scroll', _.throttle(this.handleScroll, 100));
     }
 }

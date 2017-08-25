@@ -54,7 +54,7 @@ const actions = {
         return Api.discover.getDiscoverFeed(
             {
                 limit: context.getters.limit,
-                offset: context.getters.offsetFollowed,
+                offset: context.getters.offsetDiscover,
             })
             .then( ({ data }) => {
                 context.commit('nextOffsetDiscover');

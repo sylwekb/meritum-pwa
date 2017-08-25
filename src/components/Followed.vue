@@ -44,7 +44,7 @@ export default {
         },
     },
     created() {
-        this.loadMorePosts();
+        if (_.isEmpty(this.feed)) this.loadMorePosts();
         window.addEventListener('scroll', _.throttle(this.handleScroll, 100));
     }
 }
