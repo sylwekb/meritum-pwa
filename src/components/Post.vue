@@ -40,7 +40,6 @@ export default {
                     this.apiPost = data;
                 });
         }
-        else window.scrollTo(0, 0);
     },
 }
 </script>
