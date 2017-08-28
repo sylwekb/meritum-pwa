@@ -13,6 +13,9 @@ const state = {
     offsetDiscover: 0,
     offsetFollowed: 0,
     postsFollowed: [],
+    User: {
+        isAuthenticated: false,
+    },
 }
 
 const getters = {
@@ -21,6 +24,7 @@ const getters = {
     offsetDiscover: state => state.offsetDiscover,
     offsetFollowed: state => state.offsetFollowed,
     postsFollowed: state => state.postsFollowed,
+    User: state => state.User,
 }
 
 const mutations = {
@@ -36,6 +40,10 @@ const mutations = {
     nextOffsetDiscover(state) {
         state.offsetDiscover += state.limit;
     },
+    setUser(state, payload) {
+        state.User = payload;
+        state.User.isAuthenticated = true;
+    }
 }
 
 const actions = {
@@ -60,6 +68,13 @@ const actions = {
                 context.commit('nextOffsetDiscover');
                 context.commit('addDiscoverFeed', data['results']);
             })
+    },
+    authenticate(context, payload) {
+        return Api.auth.login(payload)
+            .then( ({ data }) => {
+                console.log("Then", data)
+                context.commit('setUser', data);
+            });
     },
 }
 

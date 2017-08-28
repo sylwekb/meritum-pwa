@@ -5,8 +5,8 @@ import Post from './components/Post.vue'
 
 
 export const routes = [
-    {path: '/', component: Followed, name: "followed"},
-    {path: '/discover', component: Discover, name: "discover"},
+    {path: '/', component: Discover, name: "discover"},
+    {path: '/followed', component: Followed, name: "followed"},
     {path: '/profile', component: Profile, name: "profile"},
     {path: '/posts/:id', component: Post, name: "post", props: true},
 ]
